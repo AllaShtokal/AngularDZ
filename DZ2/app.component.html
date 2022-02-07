@@ -1,0 +1,44 @@
+<div class="form-group">
+  <h3 for="power">You are adding a person with: </h3>
+  <p> Name: {{inputName}} <br> Role: {{roleItem}} <br> Age: {{ageItem}} 
+  </p>
+  <div>
+    <p>
+      <b>Input name:</b>
+      <input type="text" class="form-control" id="name" required [(ngModel)]="inputName" name="name">
+    </p>
+    <div>
+      <b>Choose a role: </b>
+      <select class="form-control" id="roleName" [(ngModel)]="roleItem">
+        <option *ngFor="let role of roles" [value]="role.name">
+          {{role.name}}</option>
+      </select>
+      <ul [ngSwitch]="roleItem">
+        <li *ngSwitchCase="'student'">
+          <div style="height:30px;width:100px;" [ngStyle]="{backgroundColor: getColor()}">
+            {{roleItem}}
+          </div>
+        </li>
+        <li *ngSwitchCase="'professor'">
+          <div style="height:30px;width:100px;" [ngStyle]="{backgroundColor: getColor()}">
+            {{roleItem}}
+          </div>
+        </li>
+        <li *ngSwitchCase="'dekan'">
+          <div style="height:30px;width:100px; " [ngStyle]="{backgroundColor: getColor()}">
+            {{roleItem}}
+          </div>
+        </li>
+      </ul>
+    </div>
+    Age Section:
+    <input type="checkbox" (click)="showDiv()" type="checkbox">
+    <div class="blue-div" *ngIf="isShown">
+      <br>
+      <b>Select age: </b>
+      <select class="form-control" id="roleName" [(ngModel)]="ageItem">
+        <option *ngFor="let age of ages" [value]="age.age">
+          {{age.age}}</option>
+      </select>
+    </div>
+  </div>
