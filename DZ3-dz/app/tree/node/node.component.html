@@ -1,0 +1,26 @@
+<div class="node">
+  {{node.name}}
+  
+  <span *ngIf="!isCreating && !isEditing">
+    <button (click)="isCreating = true">+</button>
+    <button *ngIf="node.parentId" (click)="onDeleteNode()">-</button>
+    <button (click)="isEditing = true">Edit</button>
+  </span>
+
+  <span *ngIf="isCreating">
+    <input type="text" [(ngModel)]="creatingNodeName">
+    <button (click)="modifyNode(creatingNodeName)">Save</button>
+    <button (click)="cancelModifyNode()">Cancel</button>
+  </span>
+
+  <span *ngIf="isEditing">
+    <input type="text" [(ngModel)]="editingNodeName">
+    <button (click)="modifyNode(editingNodeName)">Save</button>
+    <button (click)="cancelModifyNode()">Cancel</button>
+  </span>
+  
+
+  <div *ngFor="let node of node.children">
+    <node [node]="node" (deleteNode)="deleteNodeTest($event)"></node>
+  </div>
+</div>
