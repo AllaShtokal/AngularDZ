@@ -1,0 +1,85 @@
+<div class="container"><br />
+
+  <form novalidate #form="ngForm">
+
+    <br /><br />
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <td colspan="7">
+          <div class="centered">
+           <div>
+            <h3> Data from https://www.boredapi.com/api/activity</h3>
+           </div>
+          </div>
+        </td>
+        </tr>
+        <tr>
+          <th>Activity <div class="form-group">
+              <input type="text" class="form-control" name="activity" ngModel />
+            </div>
+          </th>
+
+          <th><strong>Type</strong>
+            <div class="form-group">
+
+              <select class="form-control" name="type" ngModel>
+                <option></option>
+                <option *ngFor="let type of types" [value]="type">{{type}}</option>
+              </select>
+            </div>
+          </th>
+          <th>Participants
+            <div class="form-group">
+              <input placeholder="participantsFrom" type="text" class="form-control" name="participantsFrom" ngModel />
+            </div>
+            <span class="form-group">
+              <input placeholder="participantsTo" type="text" class="form-control" name="participantsTo" ngModel />
+            </span>
+          </th>
+          <th>Price
+            <div class="form-group">
+              <input type="text" placeholder="priceFrom" class="form-control" name="priceFrom" ngModel />
+            </div>
+            <span class="form-group">
+              <input type="text" placeholder="priceTo" class="form-control" name="priceTo" ngModel />
+            </span>
+          </th>
+          <th>Link
+            <span class="form-group">
+              <input type="checkbox" class="form-control" name="link" ngModel />
+            </span>
+          </th>
+          <th>Key
+            <div class="form-group">
+              <input type="text" class="form-control" name="key" ngModel />
+            </div>
+          </th>
+          <th>Date
+            <div class="form-group">
+              <input type="date" class="form-control" name="dateFrom" ngModel />
+            </div>
+            <div class="form-group">
+              <input type="date" class="form-control" name="dateTo" ngModel />
+            </div>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let item of dataFromApi | tableFilter: form.value">
+          <td>{{ item.activity }}</td>
+          <td>{{ item.type }}</td>
+          <td>{{ item.participants }}</td>
+          <td>{{ item.price }}</td>
+          <td>{{ item.link }}</td>
+          <td>{{ item.key }}</td>
+          <td>{{ item.date | dateFormat }}</td>
+        </tr>
+      </tbody>
+
+    </table>
+
+  </form>
+</div>
