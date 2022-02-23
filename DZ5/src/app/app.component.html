@@ -1,0 +1,153 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8">
+      <h1>Existek course member form</h1>
+      <form [formGroup]="form">
+        <div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-10 col-md-6">
+              <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" class="form-control" id="name" formControlName="mName">
+                <span class="error" *ngIf="form.controls['mName'].hasError('required') && !submitted">required</span>
+                <span class="error" *ngIf="form.controls['mName'].hasError('pattern') && !submitted">Only letters acceptable</span>
+                <span class="error" *ngIf="form.controls['mName'].hasError('minLength') && !submitted">min Length 2</span>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-6">
+              <div class="form-group">
+                <label for="email">email</label>
+                <input type="email" class="form-control" id="email" formControlName="mEmail">
+                <span class="error" *ngIf="form.controls['mEmail'].hasError('required') && !submitted ">required</span>
+                <span class="error" *ngIf="form.controls['mEmail'].hasError('email') && !submitted">is not correct e-mail</span>
+                <span class="error" *ngIf="form.controls['mEmail'].hasError('notAllowedEmailError') && !submitted">Email is reserved, pls try another one </span>                
+              </div>
+            </div>
+          </div>
+          <div class="row flex-el">
+            <div class="col-xs-12 col-sm-10 col-md-6">
+              <div class="form-group">
+                <label for="occupation">Occupation</label>
+                <select class="form-select" id="occupation" formControlName="mOccupation">
+                  <option *ngFor="let occupation of occupations" [value]="occupation">{{occupation}}</option>
+                </select>
+                <span class="error" *ngIf="form.controls['mOccupation'].hasError('required') && !submitted">required</span>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-6">
+              <div class="form-group">
+                <label for="joiningDate">Joining Date</label>
+                <input type="date" class="form-control" id="joiningDate" formControlName="mJoiningDate">
+                <span class="error" *ngIf="form.controls['mJoiningDate'].hasError('required') && !submitted">required</span>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-6">
+              <div class="form-group">
+                <label for="wantToWorkInExistek">Want to join to Existek</label>
+                <input type="checkbox" class="form-check-input" id="wantToWorkInExistek"
+                  formControlName="mWantToWorkInExistek" ngModel>
+              </div>
+            </div>
+          </div>
+          <div formGroupName="address">
+            <div class="row">
+              <div class="col-xs-12 col-sm-10 col-md-6">
+                <div class="form-group">
+                  <label for="country">Country</label>
+                  <input type="text" class="form-control" id="country" formControlName="mCountry">
+                  <span class="error" *ngIf="addressGroup.controls['mCountry'].hasError('pattern') && !submitted">Only letters acceptable</span>
+                  <span class="error" *ngIf="addressGroup.controls['mCountry'].hasError('acceptableCountriesError')">Acceptable countries: Poland, Ukraine, Moldova </span>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-10 col-md-6">
+                <div class="form-group">
+                  <label for="city">City</label>
+                  <input type="text" class="form-control" id="city" formControlName="mCity">
+                  <span class="error" *ngIf="addressGroup.controls['mCity'].hasError('pattern') && !submitted">Only letters acceptable</span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-10 col-md-6">
+                <div class="form-group">
+                  <label for="street">Street</label>
+                  <input type="text" class="form-control" id="street" formControlName="mStreet">
+                  <span class="error" *ngIf="addressGroup.controls['mStreet'].hasError('pattern') && !submitted">Only letters acceptable</span>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-10 col-md-6">
+                <div class="form-group">
+                  <label for="homeNumber">Home Number</label>
+                  <input type="text" class="form-control" id="homeNumber" formControlName="mHomeNumber">
+                  <span class="error" *ngIf="addressGroup.controls['mHomeNumber'].hasError('pattern') && !submitted">Only numbers acceptable</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-xs-12 col-sm-10 col-md-6">
+              <div formArrayName="mTechnologies" class="form-group">
+                <div *ngFor="let t of technologies.controls; let i = index" class="col-xs-12 col-sm-10 col-md-6"  >
+                  <div [formGroupName]="i" >
+                    <div class="flex-el">
+                      <div class="flex-el">
+                        <label for="name">Skill:</label>
+                        <input type="text" formControlName="name" class="form-control input" id="name" />
+                        <span class="error" *ngIf="(castToFormGroup(t).controls['name'].hasError('required') && !submitted && castToFormGroup(t).controls['name'].touched) 
+                        || (showErrorMessage  && castToFormGroup(t).controls['name'].hasError('required') )">
+                        required</span>
+                      </div>
+                      <div class="flex-el" >
+                        <label for="name">Tag:</label>                      
+                        <select class="form-select input" id="tag" formControlName="tag">
+                          <option *ngFor="let tag of tags" [value]="tag">{{tag}}</option>
+                        </select>
+                        <span class="error" *ngIf="castToFormGroup(t).controls['tag'].hasError('required') && !submitted && castToFormGroup(t).controls['tag'].touched 
+                        || (showErrorMessage  && castToFormGroup(t).controls['tag'].hasError('required') ) ">required</span>
+                      </div>
+                      <div class="flex-el" >
+                        <input type="button" (click)="removeTechnology(i)" class="btn btn-light" value="Remove skill" />
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <input type="button" (click)="addTechnology()" class="btn btn-light" value="Add skill" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="knopka">
+          <input type="button" (click)="onSubmit()" class="btn btn-success" value="Submit Form">
+        </div>
+      </form>
+    </div>
+  </div>
+  <hr>
+  <div *ngIf="submitted">
+    <h3>Form was successfully submitted with values:</h3>
+    <div class="row">
+      <div class="col-xs-12 col-sm-10 col-md-8">
+        <p>name: {{member.name}}</p>
+        <p>email: {{member.email}}</p>
+        <p>joiningDate: {{member.joiningDate | date:'dd/MM/yyyy'}}</p>
+        <p>occupation: {{member.occupation}}</p>
+        <p>wantToWorkInExitek: {{member.wantToWorkInExistek}}</p>
+        <p>country: {{member.address.country}}</p>
+        <p>city: {{member.address.city}}</p>
+        <p>street: {{member.address.street}}</p>
+        <p>homeNumber: {{member.address.homeNumber}}</p>
+        <p>homeNumber: </p>
+        <div *ngIf="member.technologies.length > 0">
+          <div class="flex-el" *ngFor="let tech of member.technologies" >
+            <p *ngIf="tech.name">Skill: {{tech.name}} </p>
+            <p *ngIf="tech.tag">#{{tech.tag}} </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="showErrorMessage">Correct errors</div>
+</div>

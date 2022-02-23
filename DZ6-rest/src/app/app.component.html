@@ -1,0 +1,58 @@
+<div>
+  <div class="container">
+    <form [formGroup]="addForm">
+      <div class="form-group input-group-lg">
+        <input class="form-control form-control-sm" placeholder="UserId" formControlName="userId">
+      </div>
+      <div class="form-group input-group-lg">
+        <input class="form-control form-control-sm" placeholder="Title" formControlName="title">
+      </div>
+      <div class="form-group input-group-lg">
+        <input class="form-control form-control-sm" placeholder="body" formControlName="body">
+      </div>
+      <button type="submit" (click)="submitForm()" [disabled]="addForm.pristine" class="btn btn-success">Add</button>
+      <button type="reset" (click)="revert()" [disabled]="addForm.pristine" class="btn btn-light">
+        Reset
+      </button>
+    </form>
+  </div>
+  <div>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#id</th>
+          <th scope="col">User</th>
+          <th scope="col">Title</th>
+          <th scope="col">Body</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let item of postsFromApi; let i = index ">
+        <tr>
+
+          <td>{{ item.id }}</td>
+          <td>{{ item.userId }} </td>
+          <td>
+            <div *ngIf="!item.isEditModeOn">{{ item.title }}</div>
+            <input type="text" value="{{item.title}}" *ngIf="item.isEditModeOn" class="form-control" name="title"
+              [(ngModel)]="item.title">
+          </td>
+          <td>
+            <div *ngIf="!item.isEditModeOn">{{ item.body }}</div>
+            <input type="text" value="{{item.body}}" *ngIf="item.isEditModeOn" class="form-control" name="body"
+              [(ngModel)]="item.body">
+          </td>
+          <td>
+            <div class="btns">
+              <input type="button" (click)="removeBtnAction(item)" class="btn btn-danger" value="Delete">
+              <input type="button" (click)="editBtnAction(item)" class="btn btn-info" value="Edit"
+                *ngIf="!item.isEditModeOn">
+              <input type="button" (click)="item.isEditModeOn=false; updateBtnAction(item)" class="btn btn-success"
+                value="Update" *ngIf="item.isEditModeOn">
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
